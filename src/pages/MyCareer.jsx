@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import MyCareerItem from 'components/MyCareer/MyCareerItem';
-import image0 from '../img/1.jpg';
+
+import coopgoimg from '../img/coopgo.jpg';
+import moeumimg from '../img/moeum.png';
+import ewhachainimg from '../img/ewhachain.png';
+import soobang from '../img/soobang.jpg';
+import image0 from '../img/0.jpg';
+
 
 const TitleText = styled.h2`
 
@@ -132,7 +138,7 @@ const projects = [
     details: 'ReactJS와 Firebase를 이용해 자신을 소개하는 페이지를 제작하고'
       + '페이지 방문객들이 자유롭게 방문록 벽돌을 쌓을 수 있는 Guest Book 기능을 구현했다',
       contribution: '100%',
-      image: image0,
+      image: soobang,
       link: "https://github.com/hyunsooBang/myHomePage",
   },
   {
@@ -143,7 +149,7 @@ const projects = [
     details: '이화여자대학교의 블록체인 학회 "이화체인"에 11기 신입부원으로 들어와' +
     '현재는 12기 교육부 임원진을 맡아 활동하고 있다.',
     contribution: '20%',
-    image: image0,
+    image: ewhachainimg,
     link: "https://ewhachain.netlify.app/"
   },
   {
@@ -153,7 +159,7 @@ const projects = [
     description: 'AI 객체인식을 통한 매점 자동 앱 결제 서비스',
     details: 'Flutter와 Firebase를 이용해 UI디자인부터 App 전체 개발을 맡았당',
     contribution: '100%',
-    image: image0,
+    image: coopgoimg,
     link: "https://github.com/KSB-graduation-proj/APP"
   },
   {
@@ -173,7 +179,7 @@ const projects = [
     description: '서울시 5개구 모범음식점 리뷰작성 웹 서비스',
     details: 'html, css, js 및 mysql, php, apache 이용해 만듬',
     contribution: '35%',
-    image: image0,
+    image: moeumimg,
     link: "https://github.com/hyunsooBang/nice_restaurant"
   },
 ];

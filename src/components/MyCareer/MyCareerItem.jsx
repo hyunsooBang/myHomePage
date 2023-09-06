@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 const CardContainer = styled.div`
-  width: 30%;
+  width: 40%;
   flex-direction: column;
   margin: 50px;
   cursor: pointer;
