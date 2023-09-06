@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { getFirestore, collection, getDocs, doc, updateDoc } from 'firebase/firestore/lite';
+import { collection, getDocs, doc, updateDoc } from 'firebase/firestore/lite';
 import { userdb } from '../firebase';
 import GuestBookItem from 'components/GuestBook/GuestBookItem';
 
@@ -128,7 +128,7 @@ const ButtonGroup = styled.div`
     font-family: 'Noto Sans KR', cursive;
 
     &:hover {
-      background-color: #2eb999;
+      background-color: #44c899;
     }
   }
 `;

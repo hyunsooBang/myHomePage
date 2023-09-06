@@ -88,10 +88,6 @@ const GreetingText = styled.p`
 `;
 
 const cat = 'ฅ^•ﻌ•^ฅ';
-const CatText = styled.div`
-   // animation: ${blingbling} 1.5s infinite;
-    
-`;
 
 const Main = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
