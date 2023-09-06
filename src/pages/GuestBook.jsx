@@ -1,21 +1,43 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React, { useEffect, useState } from 'react';
+import styled, { keyframes } from 'styled-components';
+import { getFirestore, collection, getDocs, doc, updateDoc } from 'firebase/firestore/lite';
+import { userdb } from '../firebase';
+import GuestBookItem from 'components/GuestBook/GuestBookItem';
 
 const GuestbookContainer = styled.div`
-  font-family: Arial, sans-serif;
+  font-family: 'Noto Sans KR', cursive;
   text-align: center;
   padding: 20px;
 `;
 
+const blingbling = keyframes`
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.3);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+`;
+
 const AddButton = styled.button`
-  background-color: #FF8181;
-  color: white;
+  
+  background-color: transparent;
+  font-family: 'Noto Sans KR', cursive;
+  color: #2ec999;
   border: none;
   padding: 10px 20px;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
   margin-bottom: 20px;
   border-radius: 5px;
+  animation: ${blingbling} 1.5s infinite;
+
   
 `;
 
@@ -24,6 +46,7 @@ const Popup = styled.div`
   position: fixed;
   top: 50%;
   left: 50%;
+  width: 250px;
   transform: translate(-50%, -50%);
   background-color: white;
   padding: 30px;
@@ -31,6 +54,9 @@ const Popup = styled.div`
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
   z-index: 1;
   text-align: left;
+  font-family: 'Noto Sans KR', cursive;
+  align-items: center;
+  justify-content: center;
 `;
 
 const InputGroup = styled.div`
@@ -39,143 +65,193 @@ const InputGroup = styled.div`
   label {
     display: block;
     font-weight: bold;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
+    color: #464646;
+    
   }
 
-  input,
-  textarea {
-    width: 100%;
+  input
+  {
+    font-family: 'Noto Sans KR', cursive;
+    width: 91%;
+    height: 20px;
     padding: 10px;
+    font-family: 
+    font-weight: bold;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  textarea {
+    font-family: 'Noto Sans KR', cursive;
+    width: 91%;
+    height: 50px;
+    padding: 10px;
+    font-family: 
+    font-weight: bold;
     border: 1px solid #ccc;
     border-radius: 5px;
   }
 `;
 
-const ButtonGroup = styled.div`
-  text-align: right;
+const ButtonClose = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  
+  border: none;
+  color: #2ed899;
+  cursor: pointer;
+  font-size: 25px;
+  transition: font-size 0.3s ease; /* 커서를 올렸을 때 글자 크기 변화 */
+  outline: none; /* 클릭 포커스 효과 제거 */
 
-  button {
-    background-color: #FF8181;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-left: 10px;
-    border-radius: 5px;
-
-    &:hover {
-      background-color: #FF6060;
-    }
+  &:hover {
+    font-size: 28px; /* 버튼 크기 확대 */
   }
 `;
 
-const GuestbookList = styled.ul`
-  list-style: none;
-  width: 100px;
-  padding: 0;
-  margin: 0;
+
+
+const ButtonGroup = styled.div`
   text-align: center;
 
-  li {
-    margin: 20px 0;
+  button {
+    background-color: #2ed899;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 15px;
     cursor: pointer;
+    margin-left: 10px;
+    border-radius: 5px;
+    font-family: 'Noto Sans KR', cursive;
 
-    h2 {
-      background-color: #FF8181;
-      color: white;
-      padding: 10px;
-      font-size: 18px;
-      border-radius: 5px;
-      margin-bottom: 10px;
-      cursor: pointer;
-    }
-
-    p {
-      margin-top: 10px;
+    &:hover {
+      background-color: #2eb999;
     }
   }
 `;
 
 function GuestBook() {
-  const [guestbook, setGuestbook] = useState([]);
+  
   const [newEntry, setNewEntry] = useState({ title: '', contents: '', author: '' });
   const [isPopupOpen, setPopupOpen] = useState(false);
+  const [guestlist, setGuestList] = useState([]);
+  const guestArray = Object.values(guestlist);
 
-  const addEntry = () => {
-    // 입력된 내용을 guestbook에 추가
-    setGuestbook([...guestbook, { ...newEntry, isOpen: false }]);
+  async function fetchGuestList() {
+    try {
+      const guestCol = collection(userdb, 'soobang'); // 'soobangGuest'에 해당하는 컬렉션 이름으로 수정
+      const guestSnapshot = await getDocs(guestCol);
+      const guestData = guestSnapshot.docs
+      .filter(doc => doc.id === "guest")
+      .map(doc => doc.data());
+        
+      const guestListObject = {};
+      guestData.forEach(data => {
+        Object.keys(data).forEach(docKey => {
+          guestListObject[docKey] = data[docKey];
+        });
+      });
+    
+      console.log(guestListObject); // 현재 모든 게스트북이 들어감
+      setGuestList(guestListObject);
+    } catch (error) {
+      console.error("Firebase Error:", error);
+    }
+  }
 
-    // 입력 필드 초기화
-    setNewEntry({ title: '', contents: '', author: '' });
+  useEffect(() => {
+    // Firebase에서 데이터 가져오는 함수
+      console.log('ee');
+      fetchGuestList(); // 데이터 가져오기 함수 호출
+  }, []);
 
-    // 팝업 닫기
-    setPopupOpen(false);
-  };
+  const addEntry = async() => {
+    try {
+      const currentDate = new Date();
+      const timestamp = currentDate.getTime();
 
-  const toggleEntry = (index) => {
-    // 클릭한 방명록의 내용 보이기/접기 토글
-    const updatedGuestbook = guestbook.map((entry, i) => {
-      if (i === index) {
-        return { ...entry, isOpen: !entry.isOpen };
-      }
-      return entry;
-    });
-    setGuestbook(updatedGuestbook);
-  };
+      const docData = {
+        title: newEntry.title,
+        contents: newEntry.contents,
+        author: newEntry.author,
+      };
 
+      const docReference = doc(userdb, "soobang/guest");
+      await updateDoc(docReference ,{[timestamp]:docData} );
+      
+      
+      const updatedGuestList = [...Object.values(guestlist), {[timestamp]: docData}];
+      setGuestList(updatedGuestList);
+      fetchGuestList();
+
+      setNewEntry({title: '', contents: '', author: ''});
+      setPopupOpen(false);
+
+    } catch(error){
+      console.error("firebase error: ",error);
+    }
+  };  
+
+  const GuestHeader = styled.h1`
+  font-size: 24px;
+  margin-bottom: 10px;
+  text-align: center;
+`;
+
+  const GuestText = styled.p`
+    font-size: 16px;
+  `;
+  
+  
   return (
     <GuestbookContainer>
-      <h1> ~ Guest Book ~ </h1>
-      <AddButton onClick={() => setPopupOpen(true)}>방명록 작성하기</AddButton>
+      <GuestHeader>Soobang's Guest House</GuestHeader>
+      <GuestText>게스트를 위한 공간입니다. 벽돌을 쌓아 게스트하우스를 완성해주세요!
+      </GuestText>
+      <AddButton onClick={() => setPopupOpen(true)}>벽돌 쌓으러가기</AddButton>
+      <GuestBookItem guestArray={guestArray} />
       {isPopupOpen && (
         <Popup isOpen={isPopupOpen}>
-          <h2>방명록 작성</h2>
+          <ButtonClose onClick={() => setPopupOpen(false)}> ×</ButtonClose>
+         
+         
+          <h2>방명록 벽돌</h2>
+          
           <InputGroup>
-            <label>Title:</label>
+            <label>벽돌명</label>
             <input
               type="text"
-              placeholder="Title"
+              placeholder="벽돌의 이름을 지어주세요."
               value={newEntry.title}
               onChange={(e) => setNewEntry({ ...newEntry, title: e.target.value })}
             />
           </InputGroup>
           <InputGroup>
-            <label>Contents:</label>
+            <label>속재료</label>
             <textarea
-              placeholder="Contents"
+              placeholder="벽돌의 속재료를 채워주세요."
               value={newEntry.contents}
               onChange={(e) => setNewEntry({ ...newEntry, contents: e.target.value })}
             />
           </InputGroup>
           <InputGroup>
-            <label>Author:</label>
+            <label>지은이 </label>
             <input
               type="text"
-              placeholder="Author"
+              placeholder="made by"
               value={newEntry.author}
               onChange={(e) => setNewEntry({ ...newEntry, author: e.target.value })}
             />
           </InputGroup>
           <ButtonGroup>
-            <button onClick={addEntry}>등록하기</button>
-            <button onClick={() => setPopupOpen(false)}>취소</button>
+            <button onClick={addEntry}>벽돌 쌓기</button>
           </ButtonGroup>
         </Popup>
       )}
-      <GuestbookList>
-        {guestbook.map((entry, index) => (
-          <li key={index}>
-            <h2 onClick={() => toggleEntry(index)}>{entry.title}</h2>
-            {entry.isOpen && (
-              <>
-                <p>작성자: {entry.author}</p>
-                <p>{entry.contents}</p>
-              </>
-            )}
-          </li>
-        ))}
-      </GuestbookList>
+    
     </GuestbookContainer>
   );
 }

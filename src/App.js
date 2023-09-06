@@ -8,6 +8,8 @@ import MyCareer from 'pages/MyCareer';
 import Main from 'pages/Main';
 import Onboarding from 'components/Onboarding';
 import styled from 'styled-components';
+import { getDB } from './firebase';
+
 
 const AppWrapper = styled.div`
   font-family: 'Noto Sans KR', cursive; 
@@ -32,6 +34,7 @@ function App() {
           localStorage.setItem('hasVisited', 'true');
         }
       }, []);
+      
 
   return (
     <AppWrapper>

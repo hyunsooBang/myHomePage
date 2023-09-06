@@ -4,7 +4,7 @@ import Sidebar from './Sidebar';
 import { useNavigate } from 'react-router-dom'; // useNavigate 추가
 
 const NavbarWrapper = styled.nav`
-  background: #FF8181;
+  background: #2ed899;
   color: white;
   //width: 100%;
   display: flex;

@@ -8,7 +8,7 @@ const OnboardingWrapper = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(45deg, #f06, #9f6);
+  background: linear-gradient(45deg, #2ed, #ae8);
   background-size: 200% 200%;
   animation: ${props => props.visible ? cloudAnimation : 'none'} 10s linear infinite;
   display: flex;

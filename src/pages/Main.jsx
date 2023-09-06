@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 
 const FirstContainer = styled.div`
-  background-color: #FF8181;
+  background-color: #2ed899;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;

@@ -20,7 +20,7 @@ const CloseButton = styled.button`
   right: 10px;
   background: transparent;
   border: none;
-  color: #ff8181;
+  color: #2ec999;
   cursor: pointer;
   font-size: 15px;
   transition: font-size 0.3s ease; /* 커서를 올렸을 때 글자 크기 변화 */
@@ -35,7 +35,7 @@ const SidebarItem = styled.div`
   padding: 20px;
   margin-top: 25px;
   cursor: pointer;
-  color: #ff8181;
+  color: #2eb899;
   transition: font-size 0.3s ease;
 
   &:hover {
@@ -51,18 +51,23 @@ const Sidebar = ({ isOpen, onClose }) => {
     switch (section) {
         case 'About Me':
             navigate('/about-me');
+            onClose();
             break;
         case 'My Career':
             navigate('/my-career');
+            onClose();
             break;
         case 'For Fun':
             navigate('/for-fun');
+            onClose();
             break;
         case 'Guest Book':
             navigate('/guest-book');
+            onClose();
             break;
         default:
             navigate('/');
+            onClose();
             break;
       }
     };
