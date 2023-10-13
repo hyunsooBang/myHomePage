@@ -1,59 +1,61 @@
 import React from 'react';
 import styled from 'styled-components';
+import AboutMeContainer from 'components/AboutMe/AboutMeContainer';
 import myImage from '../img/0.jpg';
+import { useNavigate } from 'react-router-dom'; // useNavigate 추가
 
 const PageContainer = styled.div`
   display: flex;
   height: 100%;
 `;
 
-const AboutMeContainer = styled.div`
-  flex: 1; 
-  //text-align: left;
-  padding: 20px 50px 20px 20px;
-`;
 
 const ContentContainer = styled.div`
   flex: 3; 
 `;
 
-const ProfileImage = styled.img`
-  max-width: 200px;
-  left: -;
-  border-radius: 0%;
-  margin: 20px 0px 20px 20px;
-  display: block;
-  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
-`;
-const AboutMeTitle = styled.h2`
-  font-family: 'Noto Sans KR', cursive;
-  font-size: 20px;
-  margin: 0px 0px 0px 20px;
 
-`;
-const AboutMeContent = styled.div`
+const aboutme = {
+  name: '방현수, Hyunsoo Bang',
+  university: 'Ewha Womans University',
+  description: 'JUST TO DO IT',
+  goal: 'Wanna Be a Fronted Engineer',
+  image: myImage, // 이미지 경로
+};
+
+const WriteButton = styled.button`
+
+  background-color: transparent;
   font-family: 'Noto Sans KR', cursive;
-  font-size: 14px;
-  font-style: italic;
-  line-height: 1.2;
-  max-width: 600px;
-  margin: 0px 0px 0px 20px;
+  color: #2ec999;
+  border: none;
+  padding: 10px 20px;
+  font-size: 15px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  position: absolute;
+  top: 70px;
+  right: 10px;
+  transition: font-size 0.3s ease; /* 커서를 올렸을 때 글자 크기 변화 */
+  outline: none;
+  &:hover {
+    font-size: 18px;
+    color: #2ea999;
+  }
 `;
 
 function AboutMe() {
+  const navigate = useNavigate(); // useNavigate 추가
+  const openWindow = () => {
+    navigate('/about-me/writing-diary');
+  }
   return (
     <PageContainer>
-      <AboutMeContainer>
-        <ProfileImage src={myImage} alt="My Photo" />
-        <AboutMeTitle>About Me</AboutMeTitle>
-        <AboutMeContent>
-          <p>방현수, Hyunsoo Bang</p>
-          <p>Ewha Womans University</p>
-          <p>JUST TO DO IT</p>
-          <p>Wanna Be a Fronted Engineer</p>
-        </AboutMeContent>
-      </AboutMeContainer>
-      <ContentContainer>{/* 오른쪽에 들어갈 내용 */}</ContentContainer>
+      <AboutMeContainer aboutme={aboutme} />
+
+      <ContentContainer>
+      <WriteButton onClick={openWindow}>일기쓰기</WriteButton>  
+      </ContentContainer>
     </PageContainer>
   );
 }

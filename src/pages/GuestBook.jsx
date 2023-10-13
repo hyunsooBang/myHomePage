@@ -37,7 +37,6 @@ const AddButton = styled.button`
   margin-bottom: 20px;
   border-radius: 5px;
   animation: ${blingbling} 1.5s infinite;
-
   
 `;
 

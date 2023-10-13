@@ -8,7 +8,8 @@ import MyCareer from 'pages/MyCareer';
 import Main from 'pages/Main';
 import Onboarding from 'components/Onboarding';
 import styled from 'styled-components';
-import { getDB } from './firebase';
+import WritingDiary from 'pages/WritingDiary';
+
 
 
 const AppWrapper = styled.div`
@@ -52,6 +53,7 @@ function App() {
       <Route path="my-career" element={<MyCareer />} />
       <Route path="for-fun" element={<ForFun />} />
       <Route path="guest-book" element={<GuestBook />} />
+      <Route path="about-me/writing-diary" element={<WritingDiary />} />
     </Routes>
       </div>
     </BrowserRouter>)}
